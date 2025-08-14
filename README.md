@@ -7,7 +7,6 @@ BoB 14기 Digital Forensics 07조
 - [🛠 사용 기술 & 도구](#-사용-기술--도구)
 - [⚙️ 정렬 알고리즘 설명](#️-정렬-알고리즘-설명)
 - [▶ 실행 방법](#-실행-방법)
-- [📅 진행 일정](#-진행-일정)
 
 ---
 
@@ -65,8 +64,8 @@ BoB 14기 Digital Forensics 07조
 ## ▶ 실행 방법
 ```bash
 # 1. 저장소 클론
-git clone https://github.com/USERNAME/PowerRangeJo.git
-cd PowerRangeJo
+git clone https://github.com/USERNAME/powerrangejo.git
+cd powerrangejo
 
 # 2. data.txt 파일 준비
 #    - 쉼표(,) 또는 공백으로 구분된 숫자 리스트
