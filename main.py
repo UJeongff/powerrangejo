@@ -53,7 +53,7 @@ if __name__ == "__main__":
         print("오류: data.txt 파일을 찾을 수 없습니다.")
         exit()
     except ValueError:
-        print("오류: 파일에 숫자가 아닌 값이 포함되어 있습니다.")
+        print("오류: 파일에 숫자가 아닌 값이 포함되어 있다.")
         exit()
 
     # 읽어온 데이터 확인
