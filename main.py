@@ -1,151 +1,223 @@
+import sys
 import time
+from typing import List
 
-def merge_sort(data_list):
-    """
-    병합 정렬(Merge Sort)을 사용하여 숫자 리스트를 오름차순으로 정렬합니다.
-    Args:
-        data_list (list): 정렬할 숫자가 담긴 리스트.
-    Returns:
-        list: 정렬된 새로운 리스트.
-    """
-    if len(data_list) <= 1:
-        return data_list
+MAX_N = 10000
 
-    mid = len(data_list) // 2
-    left_half = data_list[:mid]
-    right_half = data_list[mid:]
+# ---------------------------
+# Bubble Sort
+# ---------------------------
+def bubble_sort(arr: List[int], asc: bool = True) -> List[int]:
+    a = arr[:]
+    n = len(a)
+    if asc:
+        for i in range(n):
+            swapped = False
+            for j in range(0, n - i - 1):
+                if a[j] > a[j + 1]:
+                    a[j], a[j + 1] = a[j + 1], a[j]
+                    swapped = True
+            if not swapped:
+                break
+    else:
+        for i in range(n):
+            swapped = False
+            for j in range(0, n - i - 1):
+                if a[j] < a[j + 1]:
+                    a[j], a[j + 1] = a[j + 1], a[j]
+                    swapped = True
+            if not swapped:
+                break
+    return a
 
-    sorted_left_half = merge_sort(left_half)
-    sorted_right_half = merge_sort(right_half)
-
-    return _merge(sorted_left_half, sorted_right_half)
-
-def _merge(left, right):
-    """
-    정렬된 두 리스트(left, right)를 하나로 병합하여 정렬된 리스트를 반환합니다.
-    """
-    merged_list = []
-    left_index, right_index = 0, 0
-
-    while left_index < len(left) and right_index < len(right):
-        if left[left_index] < right[right_index]:
-            merged_list.append(left[left_index])
-            left_index += 1
-        else:
-            merged_list.append(right[right_index])
-            right_index += 1
-
-    merged_list.extend(left[left_index:])
-    merged_list.extend(right[right_index:])
-    return merged_list
-
-def bubble_sort(arr):
-    n = len(arr)
+# ---------------------------
+# Selection Sort
+# ---------------------------
+def selection_sort(arr: List[int], asc: bool = True) -> List[int]:
+    a = arr[:]
+    n = len(a)
     for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
+        idx = i
+        for j in range(i + 1, n):
+            if asc:
+                if a[j] < a[idx]:
+                    idx = j
+            else:
+                if a[j] > a[idx]:
+                    idx = j
+        if idx != i:
+            a[i], a[idx] = a[idx], a[i]
+    return a
 
-def insertion_sort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
+# ---------------------------
+# Insertion Sort
+# ---------------------------
+def insertion_sort(arr: List[int], asc: bool = True) -> List[int]:
+    a = arr[:]
+    for i in range(1, len(a)):
+        key = a[i]
         j = i - 1
-        # key보다 큰 요소는 한 칸씩 뒤로 이동
-        while j >= 0 and arr[j] > key:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key
+        if asc:
+            while j >= 0 and a[j] > key:
+                a[j + 1] = a[j]
+                j -= 1
+        else:
+            while j >= 0 and a[j] < key:
+                a[j + 1] = a[j]
+                j -= 1
+        a[j + 1] = key
+    return a
 
-    return arr
+# ---------------------------
+# Merge Sort
+# ---------------------------
+def merge_sort(data_list: List[int], asc: bool = True) -> List[int]:
+    n = len(data_list)
+    if n <= 1:
+        return data_list[:]
+    mid = n // 2
+    left = merge_sort(data_list[:mid], asc=asc)
+    right = merge_sort(data_list[mid:], asc=asc)
+    return _merge(left, right, asc)
+
+def _merge(left: List[int], right: List[int], asc: bool) -> List[int]:
+    i = j = 0
+    out = []
+    if asc:
+        while i < len(left) and j < len(right):
+            if left[i] <= right[j]:
+                out.append(left[i]); i += 1
+            else:
+                out.append(right[j]); j += 1
+    else:
+        while i < len(left) and j < len(right):
+            if left[i] >= right[j]:
+                out.append(left[i]); i += 1
+            else:
+                out.append(right[j]); j += 1
+    out.extend(left[i:])
+    out.extend(right[j:])
+    return out
+
+# ---------------------------
+# Quick Sort
+# ---------------------------
+def quick_sort(arr: List[int], asc: bool = True) -> List[int]:
+    a = arr[:]
+    _quick(a, 0, len(a) - 1, asc)
+    return a
+
+def _less(x, y, asc):
+    return x < y if asc else x > y
+
+def _quick(a, lo, hi, asc):
+    while lo < hi:
+        p = _partition(a, lo, hi, asc)
+        if (p - lo) < (hi - p):
+            _quick(a, lo, p, asc)
+            lo = p + 1
+        else:
+            _quick(a, p + 1, hi, asc)
+            hi = p
+
+def _partition(a, lo, hi, asc):
+    pivot = a[(lo + hi) // 2]
+    i, j = lo - 1, hi + 1
+    while True:
+        i += 1
+        while _less(a[i], pivot, asc):
+            i += 1
+        j -= 1
+        while _less(pivot, a[j], asc):
+            j -= 1
+        if i >= j:
+            return j
+        a[i], a[j] = a[j], a[i]
+
+# ---------------------------
+# Heap Sort
+# ---------------------------
+def heap_sort(arr: List[int], asc: bool = True) -> List[int]:
+    a = arr[:]
+    n = len(a)
+
+    def sift_down(i: int, size: int):
+        while True:
+            l = 2 * i + 1
+            r = 2 * i + 2
+            best = i
+            if l < size and a[l] > a[best]:
+                best = l
+            if r < size and a[r] > a[best]:
+                best = r
+            if best == i:
+                break
+            a[i], a[best] = a[best], a[i]
+            i = best
+
+    for i in range(n // 2 - 1, -1, -1):
+        sift_down(i, n)
+    size = n
+    for end in range(n - 1, 0, -1):
+        a[0], a[end] = a[end], a[0]
+        size -= 1
+        sift_down(0, size)
+    if not asc:
+        a.reverse()
+    return a
+
+# ---------------------------
+# 실행/출력 유틸
+# ---------------------------
+def run_and_report(name: str, sorter, data: List[int], asc: bool):
+    t0 = time.perf_counter()
+    out = sorter(data, asc=asc)
+    ms = (time.perf_counter() - t0) * 1000.0
+    print(f"[{name}] N={len(out)} -> time={ms:.3f} ms")
+    preview = ", ".join(map(str, out[:50]))
+    print("sorted:", preview + (" ..." if len(out) > 50 else ""))
+    print()
+
+# ---------------------------
+# main
+# ---------------------------
+ALGOS = [
+    ("Bubble", bubble_sort),
+    ("Selection", selection_sort),
+    ("Insertion", insertion_sort),
+    ("Merge", merge_sort),
+    ("Quick", quick_sort),
+    ("Heap", heap_sort),
+]
 
 if __name__ == "__main__":
-    # 1. 데이터 읽기
-    data_list = []
+    if len(sys.argv) < 2:
+        print("사용법: python main.py <data_file> [asc|desc]")
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+    order = sys.argv[2].lower() if len(sys.argv) > 2 else "asc"
+    asc = (order == "asc")
+
+    # 데이터 읽기
+    data_list: List[int] = []
     try:
-        with open("data.txt", "r", encoding="utf-8") as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             for line in f:
                 if ":" in line:
                     line = line.split(":", 1)[1]
-                numbers = line.strip().split(",")
-                data_list.extend(int(num.strip()) for num in numbers if num.strip())
+                parts = [p.strip() for p in line.replace(",", " ").split()]
+                for p in parts:
+                    if p and p.lstrip("-").isdigit():
+                        data_list.append(int(p))
+                if len(data_list) >= MAX_N:
+                    data_list = data_list[:MAX_N]
+                    break
     except FileNotFoundError:
-        print("오류: data.txt 파일을 찾을 수 없습니다.")
-        exit()
-    except ValueError:
-        print("오류: 파일에 숫자가 아닌 값이 포함되어 있습니다.")
-        exit()
+        print(f"오류: {file_path} 파일을 찾을 수 없습니다.")
+        sys.exit(1)
 
-    # 읽어온 데이터 확인
-    print("--- 원본 데이터 ---")
-    print(data_list)
-    print(f"총 데이터 개수: {len(data_list)}\n")
+    print(f"입력 데이터 개수: {len(data_list)} (최대 {MAX_N})\n")
 
-    # 2. 병합 정렬 수행 및 시간 측정
-    print("--- 병합 정렬 수행 ---")
-    start_time = time.time()
-    sorted_data = merge_sort(data_list)
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print("정렬 완료!\n")
-
-    # 3. 최종 결과 출력
-    print("--- 최종 결과 ---")
-    print("정렬된 데이터:", sorted_data)
-    print(f"정렬 소요 시간: {elapsed_time:.6f}초")
-
-    with open("data.txt", "r", encoding="utf-8") as f:
-        for line in f:
-            # ":"로 분리 → 앞은 버리고 뒷부분만 사용
-            if ":" in line:
-                line = line.split(":", 1)[1]  # 첫 번째 ":" 뒤 내용만
-
-            # 공백 제거 후 콤마로 분리
-            numbers = line.strip().split(",")
-
-            # 숫자만 리스트에 추가
-            data_list.extend(int(num.strip()) for num in numbers if num.strip())
-    
-    # 결과 확인
-    print("읽어온 데이터:", data_list)
-    print(f"총 데이터 개수: {len(data_list)}")
-
-    # Bubble Sort
-    start_time = time.time()
-    bubble_data_list = bubble_sort(data_list)
-    end_time = time.time()
-    print(f"Bubble Sort: {bubble_data_list}")
-
-def heapify(arr, n, i):
-    """i를 루트로 하는 서브트리를 최대 힙으로 만드는 함수"""
-    largest = i
-    left = 2 * i + 1
-    right = 2 * i + 2
-
-    if left < n and arr[left] > arr[largest]:
-        largest = left
-    if right < n and arr[right] > arr[largest]:
-        largest = right
-
-    if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]
-        heapify(arr, n, largest)
-
-def heap_sort(arr):
-    """Heap Sort 알고리즘"""
-    n = len(arr)
-
-    # 최대 힙 생성
-    for i in range(n // 2 - 1, -1, -1):
-        heapify(arr, n, i)
-
-    # 원소 하나씩 꺼내 힙 재구성
-    for i in range(n - 1, 0, -1):
-        arr[0], arr[i] = arr[i], arr[0]
-        heapify(arr, i, 0)
-
-# -------------------------
-# 실행
-# -------------------------
-print("\n=== Heap Sort 실행 ===")
-heap_sort(data_list)
-print("정렬된 데이터:", data_list)
+    for name, func in ALGOS:
+        run_and_report(name, func, data_list, asc=asc)
