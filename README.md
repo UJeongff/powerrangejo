@@ -23,16 +23,8 @@ BoB 14기 Digital Forensics 07조
 ## 📌 프로젝트 개요
 이 레포지토리는 BoB 14기 Digital Forensics 07조의 활동과 과제를 기록합니다.  
 
-이번 과제에서는 Python을 활용해 **여러 정렬 알고리즘(Merge Sort, Heap Sort, Quick Sort, Bubble Sort, Insertion Sort)**을 구현하고,  
+이번 과제에서는 Python을 활용해 **여러 정렬 알고리즘(Merge, Heap, Quick, Bubble, Insertion, Selection)**을 구현하고,  
 동일한 데이터에 대해 알고리즘별 실행 시간과 결과를 비교하였습니다.
-
----
-
-## 📂 디렉토리 구조
-PowerRangeJo/
-├── main.py # 정렬 알고리즘 구현 및 실행 스크립트
-├── data.txt # 테스트 데이터
-└── README.md # 프로젝트 설명 문서
 
 ---
 
@@ -49,7 +41,7 @@ PowerRangeJo/
   시간 복잡도: O(n log n)
 
 - **Heap Sort**  
-  최대 힙(Max Heap)을 구성하고, 루트 노드(최대값)를 제거하며 재정렬합니다.  
+  최대 힙(Max Heap)을 구성하고, 루트 노드(최대값)를 꺼내며 재정렬합니다.  
   시간 복잡도: O(n log n)
 
 - **Quick Sort**  
@@ -62,6 +54,10 @@ PowerRangeJo/
 
 - **Insertion Sort**  
   이미 정렬된 부분에 새로운 원소를 알맞은 위치에 삽입합니다.  
+  시간 복잡도: O(n²)
+
+- **Selection Sort**  
+  남은 구간에서 최솟값(또는 최댓값)을 선택해 앞쪽과 교환합니다.  
   시간 복잡도: O(n²)
 
 ---
