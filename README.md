@@ -37,7 +37,7 @@ PowerRangeJo/
 ---
 
 ## 🛠 사용 기술 & 도구
-- Python 3.x
+- Python 3.12
 - VSCode
 - Git & GitHub
 
@@ -84,4 +84,4 @@ python main.py data.txt desc   # 내림차순 정렬
 
 # 실행 예시
 # 결과: Bubble, Selection, Insertion, Merge, Quick, Heap 순서로 모두 실행 및 시간 측정
-```bash
+```
