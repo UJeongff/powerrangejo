@@ -1,4 +1,13 @@
 import time
+
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
 if __name__ == "__main__":
     data_list = []
 
@@ -17,3 +26,9 @@ if __name__ == "__main__":
     # 결과 확인
     print("읽어온 데이터:", data_list)
     print(f"총 데이터 개수: {len(data_list)}")
+
+    # Bubble Sort
+    start_time = time.time()
+    bubble_data_list = bubble_sort(data_list)
+    end_time = time.time()
+    print(f"Bubble Sort: {bubble_data_list}")
