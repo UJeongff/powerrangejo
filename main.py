@@ -1,5 +1,12 @@
 import time
 
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+
 def insertion_sort(arr):
     for i in range(1, len(arr)):
         key = arr[i]
@@ -9,6 +16,7 @@ def insertion_sort(arr):
             arr[j + 1] = arr[j]
             j -= 1
         arr[j + 1] = key
+
     return arr
 
 if __name__ == "__main__":
@@ -29,6 +37,12 @@ if __name__ == "__main__":
     # 결과 확인
     print("읽어온 데이터:", data_list)
     print(f"총 데이터 개수: {len(data_list)}")
+
+    # Bubble Sort
+    start_time = time.time()
+    bubble_data_list = bubble_sort(data_list)
+    end_time = time.time()
+    print(f"Bubble Sort: {bubble_data_list}")
 
 def heapify(arr, n, i):
     """i를 루트로 하는 서브트리를 최대 힙으로 만드는 함수"""
@@ -64,3 +78,4 @@ def heap_sort(arr):
 print("\n=== Heap Sort 실행 ===")
 heap_sort(data_list)
 print("정렬된 데이터:", data_list)
+
